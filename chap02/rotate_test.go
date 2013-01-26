@@ -8,24 +8,29 @@ import (
 
 func testRotateLeft(rotateFunc func(goutil.SwapInterface, int), msg string, t *testing.T) {
 	arr := []int{1, 2, 3, 4, 5, 6, 7, 8}
-	rot7 := []int{2, 3, 4, 5, 6, 7, 8, 1}
-	rot0 := []int{1, 2, 3, 4, 5, 6, 7, 8}
-	rot1 := []int{8, 1, 2, 3, 4, 5, 6, 7}
+	type arrRot struct {
+		arr []int
+		rot int
+	}
+	testData := []arrRot{
+		{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 0},
+		{[]int{2, 3, 4, 5, 6, 7, 8, 1}, 7},
+		{[]int{8, 1, 2, 3, 4, 5, 6, 7}, 1},
+		{[]int{6, 7, 8, 1, 2, 3, 4, 5}, 3},
+	}
 
-	rotateFunc(goutil.IntSwapSlice(rot7), 7)
-	if !reflect.DeepEqual(arr, rot7) {
-		t.Errorf("%s 7 error, after rotation:", msg, rot7)
-	}
-	rotateFunc(goutil.IntSwapSlice(rot0), 0)
-	if !reflect.DeepEqual(arr, rot0) {
-		t.Errorf("%s 0 error, after rotation:", msg, rot0)
-	}
-	rotateFunc(goutil.IntSwapSlice(rot1), 1)
-	if !reflect.DeepEqual(arr, rot1) {
-		t.Errorf("%s 1 error, after rotation:", msg, rot1)
+	for _, td := range testData {
+		rotateFunc(goutil.IntSwapSlice(td.arr), td.rot)
+		if !reflect.DeepEqual(arr, td.arr) {
+			t.Errorf("%s %d error, after rotation: %v", msg, td.rot, td.arr)
+		}
 	}
 }
 
 func TestRotateLeft(t *testing.T) {
 	testRotateLeft(RotateLeft, "RotateLeft", t)
+}
+
+func TestRotateLeftRecursive(t *testing.T) {
+	testRotateLeft(RotateLeftBlockSwap, "RotateLeftRecursive", t)
 }
