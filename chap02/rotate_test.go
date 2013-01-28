@@ -43,3 +43,24 @@ func TestRotateLeftRecursive(t *testing.T) {
 func TestRotateLeftJuggling(t *testing.T) {
 	testRotateLeft(RotateLeftJuggling, "RotateLeftJuggling", t)
 }
+
+var benchArr = make([]int, 64*128) // 64 is common cache line size
+var benchDis = 64
+
+func BenchmarkRotateLeft_________(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RotateLeft(benchArr, benchDis)
+	}
+}
+
+func BenchmarkRotateLeftBlockSwap(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RotateLeftBlockSwap(benchArr, benchDis)
+	}
+}
+
+func BenchmarkRotateLeftJuggling(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RotateLeftJuggling(benchArr, benchDis)
+	}
+}
