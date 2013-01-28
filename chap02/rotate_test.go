@@ -1,12 +1,11 @@
 package chap02
 
 import (
-	"github.com/cyfdecyf/goutil"
 	"reflect"
 	"testing"
 )
 
-func testRotateLeft(rotateFunc func(goutil.SwapInterface, int), msg string, t *testing.T) {
+func testRotateLeft(rotateFunc func([]int, int), msg string, t *testing.T) {
 	arr := []int{1, 2, 3, 4, 5, 6, 7, 8}
 	type arrRot struct {
 		arr []int
@@ -14,13 +13,19 @@ func testRotateLeft(rotateFunc func(goutil.SwapInterface, int), msg string, t *t
 	}
 	testData := []arrRot{
 		{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 0},
-		{[]int{2, 3, 4, 5, 6, 7, 8, 1}, 7},
 		{[]int{8, 1, 2, 3, 4, 5, 6, 7}, 1},
+		{[]int{7, 8, 1, 2, 3, 4, 5, 6}, 2},
 		{[]int{6, 7, 8, 1, 2, 3, 4, 5}, 3},
+		{[]int{5, 6, 7, 8, 1, 2, 3, 4}, 4},
+		{[]int{4, 5, 6, 7, 8, 1, 2, 3}, 5},
+		{[]int{3, 4, 5, 6, 7, 8, 1, 2}, 6},
+		{[]int{2, 3, 4, 5, 6, 7, 8, 1}, 7},
+		{[]int{1, 2, 3, 4, 5, 6, 7, 8}, 8},
+		{[]int{6, 7, 8, 1, 2, 3, 4, 5}, 11},
 	}
 
 	for _, td := range testData {
-		rotateFunc(goutil.IntSwapSlice(td.arr), td.rot)
+		rotateFunc(td.arr, td.rot)
 		if !reflect.DeepEqual(arr, td.arr) {
 			t.Errorf("%s %d error, after rotation: %v", msg, td.rot, td.arr)
 		}
@@ -33,4 +38,8 @@ func TestRotateLeft(t *testing.T) {
 
 func TestRotateLeftRecursive(t *testing.T) {
 	testRotateLeft(RotateLeftBlockSwap, "RotateLeftRecursive", t)
+}
+
+func TestRotateLeftJuggling(t *testing.T) {
+	testRotateLeft(RotateLeftJuggling, "RotateLeftJuggling", t)
 }
